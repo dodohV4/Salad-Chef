@@ -10,7 +10,7 @@ public class PlayerInteractionController : MonoBehaviour
     #endregion
 
     #region Public Variables
-	public PlayerActions actionRef;
+    public PlayerActions actionRef;
     public KeyCode rightButton;
     public KeyCode leftButton;
     public KeyCode forwardButton;
@@ -27,24 +27,27 @@ public class PlayerInteractionController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(rightButton))
+        if (!actionRef.isChopping)
         {
-            transform.Translate(Vector3.right * _playerSpeed * Time.deltaTime);
-        }
+            if (Input.GetKey(rightButton))
+            {
+                transform.Translate(Vector3.right * _playerSpeed * Time.deltaTime);
+            }
 
-        if (Input.GetKey(leftButton))
-        {
-            transform.Translate(Vector3.left * _playerSpeed * Time.deltaTime);
-        }
+            if (Input.GetKey(leftButton))
+            {
+                transform.Translate(Vector3.left * _playerSpeed * Time.deltaTime);
+            }
 
-        if (Input.GetKey(forwardButton))
-        {
-            transform.Translate(Vector3.forward * _playerSpeed * Time.deltaTime);
-        }
+            if (Input.GetKey(forwardButton))
+            {
+                transform.Translate(Vector3.forward * _playerSpeed * Time.deltaTime);
+            }
 
-        if (Input.GetKey(backButton))
-        {
-            transform.Translate(Vector3.back * _playerSpeed * Time.deltaTime);
+            if (Input.GetKey(backButton))
+            {
+                transform.Translate(Vector3.back * _playerSpeed * Time.deltaTime);
+            }
         }
     }
 
@@ -54,7 +57,12 @@ public class PlayerInteractionController : MonoBehaviour
         {
             if (other.tag == "Vegetable")
             {
-				actionRef.AddVegetable(other.gameObject.GetComponent<Vegetables>().vegId);
+                actionRef.AddVegetable(other.gameObject.GetComponent<Vegetables>().vegId, other.gameObject);
+            }
+
+            if (other.tag == "ChopArea")
+            {
+                actionRef.CallForChop();
             }
         }
     }
